@@ -9,6 +9,9 @@ function getBoards() {
                 let id = rows[i]["_id"]
                 let title = rows[i]["title"]
                 let user = rows[i]["user"]
+                let date = rows[i]["date"]
+                var dt = new Date(date)
+                dt = dt.toLocaleString();
                 temphtml = `<li>
                 <button
                 onclick="location.href='/detail.html?boardsId=${
@@ -16,6 +19,7 @@ function getBoards() {
                     type="button"
                     class="btn btn-outline-primary">${title}</button>
                 <h2>${user}</h2>
+                <h2>${dt}</h2>
             </li>`;
 
                 $("#boardslist").append(temphtml);
@@ -35,6 +39,9 @@ function getboardsDetail(boardsId) {
             let user = board.user;
             let content = board.content;
             let boardsId = board._id;
+            let date = board.date;
+            var dt = new Date(date)
+            dt = dt.toLocaleString();
             let temphtml = `<li>
             <h1>${title}</h1>
             <h2>${user}</h2>
@@ -50,6 +57,7 @@ function getboardsDetail(boardsId) {
                 boardsId}'">수정</button>
             <button class="btn btn-outline-primary" onclick="deleteBoards(boardsId)">삭제</button>
             <button class="btn btn-outline-primary" onclick="location.href='/'">돌아가기</button>
+            <h2>${dt}</h2>
             <input type="text" class="form-control" placeholder="비밀번호" id="inputPassword" >`
             
             $("#boardslist2").append(temphtml2);
@@ -112,7 +120,7 @@ function updateBoards(boardsId){
         //     window.location.href ='/'
         // }
         success: function(response){
-            if(response['result'] == "success"){
+            if(response["result"] == "success"){
                 alert('게시글이 수정되었습니다.');
                 window.location.href ='/'
             }else{

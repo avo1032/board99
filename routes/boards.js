@@ -3,8 +3,9 @@ const Boards = require("../schemas/boards")
 const router = express.Router();
 
 router.get("/boardslist", async (req, res) => {
-    const boardslist = await Boards.find();
 
+    const boardslist = await Boards.find().sort({'date':-1});
+    // const boardslist = await Boards.find();
     res.json({
         boardslist
     })
@@ -25,7 +26,7 @@ router.delete("/boards/:boardsId", async (req, res) => {
     
     const existsBoards = await Boards.find({ _id: boardsId, password: password })
     if(!existsBoards.length){
-        res.json({ error: true })
+        return
     }else{
         await Boards.deleteOne({ _id: boardsId });
         res.send({ result: "success" });
@@ -40,7 +41,7 @@ router.patch("/boards/:boardsId", async (req, res) => {
     const existsBoards = await Boards.find({ _id: boardsId, password: password })
 
     if(!existsBoards.length){
-        res.json({ error: true })
+        res.send({ result: "fail" })
     }else{
         await Boards.updateOne({ _id: boardsId }, { $set: { title, content } });
         res.send({ result: "success" });
