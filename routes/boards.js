@@ -21,19 +21,30 @@ router.get("/boards/:boardsId", async (req, res) => {
 
 router.delete("/boards/:boardsId", async (req, res) => {
     const { boardsId } = req.params;
+    const { password } = req.body;
     
-    await Boards.deleteOne({ _id: boardsId });
+    const existsBoards = await Boards.find({ _id: boardsId, password: password })
+    if(!existsBoards.length){
+        res.json({ error: true })
+    }else{
+        await Boards.deleteOne({ _id: boardsId });
+        res.send({ result: "success" });
+    }
     
-    res.json({ success: true })
 })
 
 router.patch("/boards/:boardsId", async (req, res) => {
     const { boardsId } = req.params;
-    const { title, content } = req.body;
+    const { title, content, password } = req.body;
     
-    await Boards.updateOne({ _id: boardsId }, { $set: { title, content } });
-    
-    res.json({ success: true })
+    const existsBoards = await Boards.find({ _id: boardsId, password: password })
+
+    if(!existsBoards.length){
+        res.json({ error: true })
+    }else{
+        await Boards.updateOne({ _id: boardsId }, { $set: { title, content } });
+        res.send({ result: "success" });
+    }
 })
 
 router.post("/boardswrite", async (req, res) =>{

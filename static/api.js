@@ -87,6 +87,7 @@ function getboardsUpdateDetail(boardsId) {
         <div class="mybox">
             <button class="btn btn-outline-primary" onclick="updateBoards(boardsId)">수정하기</button>
             <button class="btn btn-outline-primary" onclick="location.href='/'">돌아가기</button>
+            <input type="text" class="form-control" placeholder="비밀번호" id="inputPassword" >
         </div>
         `;
 
@@ -99,27 +100,43 @@ function getboardsUpdateDetail(boardsId) {
 function updateBoards(boardsId){
     const title = $("#inputTitle").val();
     const content = $("#inputContent").val();
+    const password = $("#inputPassword").val();
     $.ajax({
         type: "PATCH", url: `/api/boards/${boardsId}`,
         // headers: {   authorization: `Bearer ${localStorage.getItem("token")}`, },
         data:{
-            title, content
+            title, content, password
         },
-        success: function () {
-            alert('게시글이 등록되었습니다.');
-            window.location.href ='/'
+        // success: function() {
+        //     alert('게시글이 수정되었습니다.');
+        //     window.location.href ='/'
+        // }
+        success: function(response){
+            if(response['result'] == "success"){
+                alert('게시글이 수정되었습니다.');
+                window.location.href ='/'
+            }else{
+                alert('비밀번호가 틀렸습니다');
+            }
         }
     });
 }
 
 function deleteBoards(boardsId) {
+    const password = $("#inputPassword").val();
     $.ajax({
-        type: "DELETE", url: `/api/boards/${boardsId}`,
+        type: "DELETE", url: `/api/boards/${boardsId}`,data: {
+            'password': password,
+        },
         // headers: {   authorization: `Bearer ${localStorage.getItem("token")}`, },
         
-        success: function () {
-            alert('해당 게시글이 삭제되었습니다.');
-            window.location.href ='/'
+        success: function (response) {
+            if(response['result'] == "success"){
+                alert('게시글이 삭제되었습니다.');
+                window.location.href ='/'
+            }else{
+                alert('비밀번호가 틀렸습니다');
+            }
         }
     });
 }
