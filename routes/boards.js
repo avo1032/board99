@@ -50,19 +50,10 @@ router.patch("/boards/:boardsId", async (req, res) => {
 
 router.post("/boardswrite", async (req, res) =>{
     const { title, user, password, content } = req.body;
-    const date = new Date().toLocaleString();
-    console.log(title, user, password, content, date)
-    console.log(req.body)
+    // const date = new Date().toLocaleString();
 
-    // const goods = await Goods.find({ goodsId })
-    // if (goods.length){
-    //     return res.status(400).json({ success: false, errorMessage: "이미 있는 데이터입니다." });
-    // }
-
-    const createdBoards = await Boards.create({ title: title, user: user, password: password, content: content, date });
+    const createdBoards = await Boards.create({ title: title, user: user, password: password, content: content });
     res.json({ boards: createdBoards });
-    // await Boards.create({ title, user, password, content });
-    // res.send({ result: "success" });
 });
 
 // router.put("/boards/:boardsId", async (req, res) => {

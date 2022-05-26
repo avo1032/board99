@@ -121,9 +121,6 @@ function updateBoards(boardsId){
         //     window.location.href ='/'
         // }
         success: function(response){
-            console.log(response);
-            console.log(response["result"])
-            console.log(response["result"] == "success");
             if(response["result"] == "success"){
                 alert('게시글이 수정되었습니다.');
                 window.location.href ='/'

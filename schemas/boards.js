@@ -18,9 +18,9 @@ const boardsSchema = mongoose.Schema({
         required: true
     },
     date : {
-        // type: Date,
-        // default: Date.now,
-        type: String,
+        type: Date,
+        default: Date.now,
+
     }
 })
 
