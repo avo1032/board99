@@ -59,7 +59,7 @@ router.post("/boardswrite", async (req, res) =>{
     //     return res.status(400).json({ success: false, errorMessage: "이미 있는 데이터입니다." });
     // }
 
-    const createdBoards = await Boards.create({ title: title, user: user, password: password, content: content, date: date });
+    const createdBoards = await Boards.create({ title: title, user: user, password: password, content: content, date });
     res.json({ boards: createdBoards });
     // await Boards.create({ title, user, password, content });
     // res.send({ result: "success" });
