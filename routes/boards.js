@@ -26,10 +26,10 @@ router.delete("/boards/:boardsId", async (req, res) => {
     
     const existsBoards = await Boards.find({ _id: boardsId, password: password })
     if(!existsBoards.length){
-        return
+        res.send({ "result": "fail" })
     }else{
         await Boards.deleteOne({ _id: boardsId });
-        res.send({ result: "success" });
+        res.send({ "result": "success" });
     }
     
 })
@@ -41,10 +41,10 @@ router.patch("/boards/:boardsId", async (req, res) => {
     const existsBoards = await Boards.find({ _id: boardsId, password: password })
 
     if(!existsBoards.length){
-        res.send({ result: "fail" })
+        res.send({ "result": "fail" })
     }else{
         await Boards.updateOne({ _id: boardsId }, { $set: { title, content } });
-        res.send({ result: "success" });
+        res.send({ "result": "success" });
     }
 })
 

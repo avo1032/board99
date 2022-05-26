@@ -10,8 +10,10 @@ function getBoards() {
                 let title = rows[i]["title"]
                 let user = rows[i]["user"]
                 let date = rows[i]["date"]
+                console.log(date);
                 var dt = new Date(date)
                 dt = dt.toLocaleString();
+                console.log(dt);
                 temphtml = `<li>
                 <button
                 onclick="location.href='/detail.html?boardsId=${
@@ -120,6 +122,8 @@ function updateBoards(boardsId){
         //     window.location.href ='/'
         // }
         success: function(response){
+            console.log(response);
+            console.log(response["result"] == "success");
             if(response["result"] == "success"){
                 alert('게시글이 수정되었습니다.');
                 window.location.href ='/'
