@@ -20,7 +20,7 @@ const boardsSchema = mongoose.Schema({
     date : {
         // type: Date,
         // default: Date.now,
-        type: Date,
+        type: String,
     }
 })
 

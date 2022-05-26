@@ -50,7 +50,7 @@ router.patch("/boards/:boardsId", async (req, res) => {
 
 router.post("/boardswrite", async (req, res) =>{
     const { title, user, password, content } = req.body;
-    const date = new Date().toLocaleString;
+    const date = new Date().toLocaleString();
     console.log(title, user, password, content, date)
     console.log(req.body)
 
