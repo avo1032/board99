@@ -10,10 +10,9 @@ function getBoards() {
                 let title = rows[i]["title"]
                 let user = rows[i]["user"]
                 let date = rows[i]["date"]
-                console.log(date);
+                console.log(rows);
                 var dt = new Date(date)
                 dt = dt.toLocaleString();
-                console.log(dt);
                 temphtml = `<li>
                 <button
                 onclick="location.href='/detail.html?boardsId=${
