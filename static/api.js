@@ -10,7 +10,7 @@ function getBoards() {
                 let title = rows[i]["title"]
                 let user = rows[i]["user"]
                 let date = rows[i]["date"]
-                console.log(rows);
+                
                 var dt = new Date(date)
                 dt = dt.toLocaleString();
                 temphtml = `<li>
@@ -122,6 +122,7 @@ function updateBoards(boardsId){
         // }
         success: function(response){
             console.log(response);
+            console.log(response["result"])
             console.log(response["result"] == "success");
             if(response["result"] == "success"){
                 alert('게시글이 수정되었습니다.');
