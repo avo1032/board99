@@ -80,87 +80,96 @@
             .mybox > li > h2.done {
                 text-decoration: line-through;
             }
-            .myuser {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: right;
-
-                margin-right: 200px;
-                margin-bottom: 10px;
-                margin-top: 10px;
-                min-height: 48px;
-            }
         </style>
 
     </head>
+
     <body>
         <div class="mypic">
             <h1>나의 게시판</h1>
         </div>
-        <div class="myuser">
+
+        <div class="mybox">
+            <h2>닉네임</h2>
+            <input
+                type="text"
+                class="form-control"
+                placeholder="최소 3자 이상, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)로 구성"
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+                id="inputUser"/>
+            <h2>비밀번호</h2>
+            <input
+                type="password"
+                class="form-control"
+                placeholder="최소 4자 이상이며, 닉네임과 같은 값이 포함된 경우 회원가입에 실패"
+                aria-label="Password"
+                aria-describedby="basic-addon2"
+                id="inputPassword1"/>
+            <h2>비밀번호확인</h2>
+            <input
+                type="password"
+                class="form-control"
+                placeholder="비밀번호를 한번 더 입력해주세여"
+                aria-label="Password"
+                aria-describedby="basic-addon2"
+                id="inputPassword2"/>
+        </div>
+        <div class="mybox">
+            <button type="button" onclick="sign_up()" class="btn btn-outline-primary">회원가입</button>
             <button
                 type="button"
-                class="btn btn-lg btn-primary"
-                onclick="goLogin()">로그인 / 회원가입</button>
-            &nbsp;&nbsp;
-            <button type="button" class="btn btn-lg btn-primary" onclick="signOut()">로그아웃</button>
+                onclick="location.href='/'"
+                class="btn btn-outline-primary">취소</button>
         </div>
 
-        <div class="mybox" id="boardslist"></div>
-        <div class="mybox">
-            <!-- <button type="button" onclick="location.href='/boardswrite.html'"
-            class="btn btn-outline-primary" >글 쓰기</button> -->
-            <button type="button" onclick="goWrite()" class="btn btn-outline-primary">글 쓰기</button>
-        </div>
-
-        <script src="/api.js"></script>
         <script>
-            $(document).ready(function () {
-                getBoards();
-            });
+            function sign_up() {
+                const user = $("#inputUser").val();
+                const password1 = $("#inputPassword1").val();
+                const password2 = $("#inputPassword2").val();
 
-            function goWrite() {
+                const userRegex = /^[A-Za-z\d]{3,}$/;
+                const passwordRegex = /^[A-Za-z\d@$!%*?&]{4,}$/;
+                const userValueCheck = userRegex.test(user);
+                const passwordValueCheck = passwordRegex.test(password1);
+
+                if(!userValueCheck){
+                    alert('아이디를 확인해주세여');
+                    return;
+                }
+                if(!passwordValueCheck){
+                    alert('비밀번호는 최소 4자리입니다.');
+                    return;
+                }
+                if(!(password1.search(user) === -1)){
+                    alert('비밀번호에 아이디가 포함되면 안됩니다.');
+                    console.log(user)
+                    console.log(password1)
+                    console.log(password1.search(user))
+                    return;
+                }
+
                 $.ajax({
-                    type: "GET",
-                    url: "/api/boardswrite",
-                    headers: {
-                        authorization: `Bearer ${localStorage.getItem("token")}`
+                    type: "POST",
+                    url: "/api/users",
+                    data: {
+                        user: user,
+                        password: password1,
+                        confirmPassword: password2
                     },
                     success: function (response) {
-                        
-                        window
-                            .location
-                            .replace("/boardswrite.html");
+                        alert("회원가입을 축하드립니다!", function () {
+                            window
+                .location
+                .replace("/login.html");
+                        });
                     },
-                    error: function (xhr, status, error) {
-                        console.log(status)
-                        console.log(xhr)
-                        console.log(error)
-                        if (xhr.status == 401) {
-                            alert("로그인이 필요합니다.");
-                        } else {
-                            localStorage.clear();
-                            // alert("알 수 없는 문제가 발생했습니다. 관리자에게 문의하세요.");
-                            alert("로그인이 필요합니다22.");
-                        }
-                        // window.location.href = "/login.html";
+                    error: function (error) {
+                        alert(error.responseJSON.errorMessage);
                     }
                 });
             }
-            function signOut() {
-                localStorage.clear();
-                window.location.href = "/";
-            }
         </script>
-        <script>
-            function goLogin() {
-                if (localStorage.getItem("token") === null) {
-                    window.location.href = "/login.html";
-                } else {
-                    alert("이미 로그인이 되어있습니다.");
-                }
-            }
-        </script>
-    </body>
+    </body>>
 </html>

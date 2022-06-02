@@ -1,5 +1,4 @@
 const express = require("express");
-
 const cors = require("cors");
 const connect = require("./schemas")          // index.js 는 생략가능함
 const app = express();
@@ -10,6 +9,7 @@ const port = 3000;
 connect();
 
 const boardsRouter = require("./routes/boards");
+const usersRouter = require("./routes/users")
 
 const requestMiddleware = (req, res, next) =>{
     console.log("Request URL:", req.originalUrl, " - ", new Date());
@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(requestMiddleware);
 
-app.use("/api", [boardsRouter]);
+app.use("/api", [boardsRouter], [usersRouter]);
 
 app.get('/', (req,res) => {                 //req객체와 res객체를 넣어준다.
     res.send("Hello World")

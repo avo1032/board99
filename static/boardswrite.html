@@ -92,10 +92,8 @@
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="제목" id="inputTitle">
                 </div>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="작성자" id="inputUser">
-                    <span class="input-group-text">@</span>
-                    <input type="text" class="form-control" placeholder="비밀번호" id="inputPassword">
+                <div class="input-group mb-3" id="writer">
+                    
                 </div>
 
             </div>
@@ -104,9 +102,8 @@
                     <textarea
                         id="inputContent"
                         class="form-control"
-                        placeholder="Leave a comment here"
                         style="height: 300px;"></textarea>
-                    <label for="floatingTextarea2">내용</label>
+                    <label for="floatingTextarea2" id="abc">내용</label>
                 </div>
             </div>
             <div class="mybox">
@@ -116,24 +113,16 @@
                 <button class="btn btn-outline-primary" onclick="location.href='/'">돌아가기</button>
             </div>
         </div>
-
-        
         <script>
             function boards_write() {
                 const title = $("#inputTitle").val();
-                const user = $("#inputUser").val();
-                const password = $("#inputPassword").val();
                 const content = $("#inputContent").val();
-
-                console.log(title, user, password, content)
-
                 $.ajax({
                     type: "POST",
                     url: `api/boardswrite`,
+                    headers: {   authorization: `Bearer ${localStorage.getItem("token")}`, },
                     data: {
                         'title': title,
-                        'user': user,
-                        'password': password,
                         'content': content,
                     },
                     success: function (response) {
@@ -146,6 +135,27 @@
                     }
                 });
             }
+            $(document).ready(function () {
+                
+
+                getBoardsId();
+            });
+            function getBoardsId(){
+                $.ajax({
+                    type: "GET",
+                    url: `api/boardswrite`,
+                    headers: {   authorization: `Bearer ${localStorage.getItem("token")}`, },
+                    data: {
+                    },
+                    success: function (response) {
+                        console.log(response)
+                        // let writeUser = response["writeId"]
+                        // let temphtml = `${writeUser}`;
+                        $("#writer").append("<h2>닉네임 : " + response + "</h2>");
+                    }
+                });
+            }
+
         </script>
     </body>
 </html>
